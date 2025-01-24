@@ -7,17 +7,20 @@ const app = express();
 
 app.use(express.json());
 
-app.use(
-    cors ({
+// Configuração do CORS
+const corsOptions = {
     origin: 'https://frontendtest-production-a47b.up.railway.app', // URL do frontend
-    methods: ["GET", "POST", "PUT", "DELETE"],
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     credentials: true,
-})
-);
+};
 
+app.use(cors(corsOptions));
+
+// Lidar com Preflight Requests (OPTIONS)
+app.options('*', cors(corsOptions)); // Garante que as requisições OPTIONS sejam tratadas
 
 // Rotas
-app.post('/usuarios', async (req, res) => {
+app.post('/User', async (req, res) => {
   await prisma.user.create({
     data: {
       titulo: req.body.titulo,
@@ -28,7 +31,7 @@ app.post('/usuarios', async (req, res) => {
   res.status(201).json(req.body);
 });
 
-app.get('/usuarios', async (req, res) => {
+app.get('/User', async (req, res) => {
     try {
       const users = await prisma.user.findMany({
         where: {
@@ -44,12 +47,8 @@ app.get('/usuarios', async (req, res) => {
       res.status(500).json({ error: 'Erro ao buscar usuários' });
     }
   });
-  
 
-  
-
-
-app.put('/usuarios/:id', async (req, res) => {
+app.put('/User/:id', async (req, res) => {
   await prisma.user.update({
     where: { id: parseFloat(req.params.id) },
     data: {
@@ -61,7 +60,7 @@ app.put('/usuarios/:id', async (req, res) => {
   res.status(200).send();
 });
 
-app.delete('/usuarios/:id', async (req, res) => {
+app.delete('/User/:id', async (req, res) => {
   await prisma.user.delete({ where: { id: parseFloat(req.params.id) } });
   res.status(200).json({ message: 'Usuário deletado com sucesso' });
 });
@@ -71,4 +70,3 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`Servidor rodando na porta ${PORT}`);
 });
-
