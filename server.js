@@ -7,14 +7,13 @@ const app = express();
 
 app.use(express.json());
 
-
-const corsOptions = {
+app.use(
+    cors ({
     origin: 'https://frontendtest-production-a47b.up.railway.app', // URL do frontend
+    methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
-};
-
-app.use(cors());
-
+})
+);
 
 
 // Rotas
