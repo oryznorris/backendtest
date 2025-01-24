@@ -7,7 +7,6 @@ const app = express();
 
 app.use(express.json());
 
-const cors = require('cors');
 
 const corsOptions = {
     origin: 'https://frontendtest-production-a47b.up.railway.app', // URL do frontend
