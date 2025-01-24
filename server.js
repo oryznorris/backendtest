@@ -7,13 +7,16 @@ const app = express();
 
 app.use(express.json());
 
-// Configurar CORS para aceitar origens de uma variável de ambiente
-const corsOption = {
-  origin: process.env.CORS_ORIGIN || '*', // Aceita qualquer origem por padrão
-  credentials: true,
-  methods: ["GET", "POST", "PUT", "DELETE"],
+const cors = require('cors');
+
+const corsOptions = {
+    origin: 'https://frontendtest-production-a47b.up.railway.app', // URL do frontend
+    credentials: true,
 };
-app.use(cors(corsOption));
+
+app.use(cors());
+
+
 
 // Rotas
 app.post('/usuarios', async (req, res) => {
